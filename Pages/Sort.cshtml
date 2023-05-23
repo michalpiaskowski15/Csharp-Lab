@@ -1,0 +1,75 @@
+﻿@page
+@model LAB4_1.Pages.Weathers.IndexModel
+@{
+	ViewData["Title"] = "Wyszukaj";
+}
+
+<h3> Podaj miasto: </h3>
+<form>
+    <div class="form-group">
+        <input type="text" id="cityInput" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="button" value="Search" class="btn btn-primary" onclick="filterTable()" />
+    </div>
+</form>
+<table>
+    @foreach (var item in Model.Weather)
+    {
+        <tr class="content">
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.Temperature)
+            </td>
+        </tr>
+    }
+</table>
+
+<style>
+    .hidden {
+        display: none;
+    }
+
+    .visible {
+        display: table-row;
+    }
+</style>
+
+<script>
+    function filterTable() {
+        var cityInput = document.getElementById('cityInput').value;
+        if(cityInput===""){return}
+        var contentRows = document.getElementsByClassName('content');
+        for (var i = 0; i < contentRows.length; i++) {
+            var nameCell = contentRows[i].querySelector('td:nth-child(1)');
+            var cityCell = contentRows[i].querySelector('td:nth-child(2)');
+            var temperatureCell = contentRows[i].querySelector('td:nth-child(3)');
+
+            if (
+                nameCell.textContent.includes(cityInput) ||
+                cityCell.textContent.includes(cityInput) ||
+                temperatureCell.textContent.includes(cityInput)
+            ) {
+                nameCell.classList.remove('hidden');
+                nameCell.classList.add('visible');
+                cityCell.classList.remove('hidden');
+                cityCell.classList.add('visible');
+                temperatureCell.classList.remove('hidden');
+                temperatureCell.classList.add('visible');
+            } else {
+                nameCell.classList.remove('visible');
+                nameCell.classList.add('hidden');
+                cityCell.classList.remove('visible');
+                cityCell.classList.add('hidden');
+                temperatureCell.classList.remove('visible');
+                temperatureCell.classList.add('hidden');
+            }
+        }
+    }
+</script>
+
